@@ -19,8 +19,7 @@ module fsm(input clk,
     reg [6:0]temp=0;
     reg [3:0]fifo[0:128];
     reg [6:0]wr_ptr,rd_ptr;
-    //reg [3:0]fifo[0:63];
-    //reg [5:0]wr_ptr,rd_ptr;
+   
     reg [3:0]state,next_state;
     parameter s0=3'd0,s1=3'd1,s2=3'd2,s3=3'd3,s4=3'd4,idle=3'd5;
     
@@ -145,12 +144,12 @@ module fsm(input clk,
         if(rd_en && m_ready) begin
               if(temp ==rd_ptr ) 
                     begin
-                       temp=0;
+                       temp<=0;
                        m_data<={{fifo[rd_ptr+3]},{fifo[rd_ptr+2]},{fifo[rd_ptr+1]},{fifo[rd_ptr]}};
                        rd_ptr<=rd_ptr+4;
                         m_keep<=7'd16;
                        m_valid<=1;
-                       m_last=0;
+                       m_last<=0;
                     end
                else if(temp==rd_ptr+1)
                     begin
@@ -159,7 +158,7 @@ module fsm(input clk,
                         m_keep<=7'd4;
                         m_valid<=1;
                         m_last=1;
-                        temp=0;       
+                        temp<=0;       
                     end
               else if(temp==rd_ptr+2)
                    begin
@@ -167,8 +166,8 @@ module fsm(input clk,
                        rd_ptr<=rd_ptr+2;
                        m_keep<=7'd8;
                        m_valid<=1;
-                       m_last=1;
-                       temp=0;  
+                       m_last<=1;
+                       temp<=0;  
                   end
              else if(temp==rd_ptr+3)
                    begin          
@@ -176,8 +175,8 @@ module fsm(input clk,
                       rd_ptr<=rd_ptr+3;
                       m_keep<=7'd12;
                       m_valid<=1;
-                      m_last=1;
-                       temp=0;  
+                      m_last<=1;
+                       temp<=0;  
                    end 
          
             else
@@ -186,7 +185,7 @@ module fsm(input clk,
                        rd_ptr<=rd_ptr+4;
                        m_keep<=7'd16;
                        m_valid<=1;
-                       m_last=0;
+                       m_last<=0;
                    end
                        
        
